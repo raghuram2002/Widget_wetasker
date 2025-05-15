@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import SideNav from './SideNav';
 import TopNav from './TopNav';
+import Headder from './Headder';
 
 const DashboardLayout = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -8,12 +9,12 @@ const DashboardLayout = () => {
     const topNavData = {
     height: '20',
     width: '1650',
-    brand: 'Brand',
-    opt1: 'Home',
-    opt2: 'Services',
-    opt3: 'About Us',
-    opt4: 'Portfolio',
-    opt5: 'Contact Us',
+    //brand: 'Brand',
+    opt1: 'MyTasker',
+    opt2: 'Chat',
+    opt3: 'Calender',
+    opt4: 'Ask help',
+    opt5: "FAQ's",
     xAxis: 200,
     yAxis: 0
   }
@@ -34,10 +35,12 @@ const DashboardLayout = () => {
 
   return (
     <div className="flex">
-      <SideNav sideData = {sideNav} isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+      <TopNav navData={topNavData} isCollapsed={isCollapsed} />
       <div>
-        <TopNav navData={topNavData} isCollapsed={isCollapsed} />
-        {/* Your content goes here */}
+        <SideNav sideData = {sideNav} isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+      </div>
+      <div className='mt-15 ml-[200px]'>
+        <Headder/>
       </div>
     </div>
   );

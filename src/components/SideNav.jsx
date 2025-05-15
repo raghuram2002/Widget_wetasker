@@ -68,22 +68,23 @@ const SideNav = ({ sideData, isCollapsed, setIsCollapsed }) => {
         bounds="window"
         enableResizing={{ right: true, bottom: true }}
     >
-      <div className={`h-full bg-gray-200 shadow-2xl transition-all duration-300 overflow-hidden`}>
+      <div className={`h-full bg-gray-200 shadow-2xl transition-all duration-300 overflow-hidden z-50 relative`}>
         {/* Header */}
-        <div className='flex items-center justify-between px-3'>
-          {!isCollapsed && <div className='font-bold py-4'>Logo</div>}
+        <div className='flex text-gray-700 items-center justify-between px-3'>
+          {!isCollapsed && <div className='font-bold py-4 hover:text-blue-600'>Logo</div>}
           <GiHamburgerMenu
-            className='text-[25px] cursor-pointer hover:text-gray-500 my-4 ml-auto'
+            className='text-[25px] cursor-pointer hover:text-blue-600 my-4 ml-auto'
             onClick={toggleSidebar}
           />
         </div>
 
         {/* Menu */}
-        <ul className='flex flex-col gap-4 text-[13px] font-bold px-2'>
+        <hr className='m-1.5 text-gray-300' />
+        <ul className='flex flex-col text-gray-700 gap-4 text-[13px] font-bold px-2'>
           {menuItems.map((item, index) => (
             <li
               key={index}
-              className='flex items-center gap-4 border-b border-gray-300 pb-2 px-1'
+              className='flex items-center gap-4 border-b border-gray-300 pb-2 px-1 hover:text-blue-600'
             >
               {item.icon}
               {!isCollapsed && <button><span className="whitespace-nowrap">{item.label}</span></button>}
