@@ -6,7 +6,7 @@ import PersonalTasker from './Personal_Tasker/PersonalTasker';
 import Meetings from './Meetings/Meetings';
 import { Rnd } from 'react-rnd';
 
-const Headder = ({ showMeetings, showPersonal }) => {
+const Headder = ({ showMeetings, showPersonal, showTeamTasker }) => {
   const [activeTab, setActiveTab] = useState('assigned');
   const [title, setTitle] = useState('Assigned To Me');
   const [searchTerm, setSearchTerm] = useState('');
@@ -17,19 +17,49 @@ const Headder = ({ showMeetings, showPersonal }) => {
   const [meetingsRnd, setMeetingsRnd] = useState({ x: 360, y: 0, width: 160, height: 40 });
 
   // Auto-switch tab if current tab is meetings but it’s hidden
-  useEffect(() => {
-    if (!showMeetings && activeTab === 'meetings') {
-      setActiveTab('assigned');
-      setTitle('Assigned To Me');
-    }
-  }, [showMeetings]);
+useEffect(() => {
+  const isTeamTaskerTab = ['assigned', 'followup', 'completed'].includes(activeTab);
 
-  useEffect(() => {
-    if (!showPersonal && activeTab === 'personal') {
+  if (isTeamTaskerTab && !showTeamTasker) {
+    if (showPersonal) {
+      setActiveTab('personal');
+      setTitle('Personal Tasker');
+    } else if (showMeetings) {
+      setActiveTab('meetings');
+      setTitle('Meetings');
+    } else {
+      setActiveTab(null);
+      setTitle('');
+    }
+  }
+
+  if (activeTab === 'personal' && !showPersonal) {
+    if (showTeamTasker) {
       setActiveTab('assigned');
       setTitle('Assigned To Me');
+    } else if (showMeetings) {
+      setActiveTab('meetings');
+      setTitle('Meetings');
+    } else {
+      setActiveTab(null);
+      setTitle('');
     }
-  }, [showPersonal]);
+  }
+
+  if (activeTab === 'meetings' && !showMeetings) {
+    if (showTeamTasker) {
+      setActiveTab('assigned');
+      setTitle('Assigned To Me');
+    } else if (showPersonal) {
+      setActiveTab('personal');
+      setTitle('Personal Tasker');
+    } else {
+      setActiveTab(null);
+      setTitle('');
+    }
+  }
+}, [activeTab, showTeamTasker, showPersonal, showMeetings]);
+
 
   const tasks = Array.from({ length: 11 }, (_, i) => ({
     id: i + 1,
@@ -59,6 +89,8 @@ const Headder = ({ showMeetings, showPersonal }) => {
         return showPersonal ? <div className="p-4 mt-[30px]"><PersonalTasker /></div> : null;
       case 'meetings':
         return showMeetings ? <div className="p-4 mt-[30px]"><Meetings /></div> : null;
+      case 'teamTasker':
+        return showTeamTasker ? <div><Assigned_To_Me /></div> : null;
       default:
         return null;
     }
@@ -70,7 +102,8 @@ const Headder = ({ showMeetings, showPersonal }) => {
         {/* Left Menu Tabs */}
         <ul className="flex gap-4 text-sm font-medium text-gray-700">
           {/* Team Tasker */}
-          <Rnd
+          { showTeamTasker && (
+            <Rnd
             default={teamTaskerRnd}
             bounds="window"
             minWidth={120}
@@ -126,6 +159,7 @@ const Headder = ({ showMeetings, showPersonal }) => {
               </ul>
             </li>
           </Rnd>
+          )}
 
           {/* Personal Tasker */}
           {showPersonal && (
@@ -223,7 +257,7 @@ const Headder = ({ showMeetings, showPersonal }) => {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="flex-1 h-full px-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="flex-1 w-[78.5%] h-full px-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Search..."
             />
           </Rnd>

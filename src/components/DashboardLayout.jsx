@@ -100,6 +100,7 @@ const DashboardLayout = () => {
           topNavVisible={topNavVisible}
           showMeetings={showMeetings}
           showPersonal={showPersonal}
+          showTeamTasker = {showTeamTasker}
           headder={headder}
         />
       </div>
